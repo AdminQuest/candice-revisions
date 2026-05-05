@@ -1,0 +1,63 @@
+{
+  "id": "physique-changements-etat-eau-pression-5e",
+  "niveau": "5e",
+  "matiere": "Physique-chimie",
+  "titre": "Changements d'état de l'eau et rôle de la pression",
+  "duree_minutes": 10,
+  "mots_cles": ["fusion", "solidification", "vaporisation", "liquéfaction", "pression", "corps pur"],
+  "cours_court": [
+    "Un changement d'état est le passage d'un état physique à un autre : solide, liquide ou gazeux.",
+    "La fusion est le passage de l'état solide à l'état liquide.",
+    "La solidification est le passage de l'état liquide à l'état solide.",
+    "La vaporisation est le passage de l'état liquide à l'état gazeux.",
+    "La liquéfaction est le passage de l'état gazeux à l'état liquide.",
+    "À la pression atmosphérique, l'eau pure fond ou se solidifie à 0 °C et bout à 100 °C.",
+    "La pression peut modifier la température de changement d'état."
+  ],
+  "questions": [
+    {
+      "type": "carte",
+      "question": "Comment s'appelle le passage de l'état solide à l'état liquide ?",
+      "correction": "C'est la fusion."
+    },
+    {
+      "type": "carte",
+      "question": "Comment s'appelle le passage de l'état liquide à l'état solide ?",
+      "correction": "C'est la solidification."
+    },
+    {
+      "type": "qcm",
+      "question": "À quelle température l'eau pure se solidifie-t-elle à la pression atmosphérique ?",
+      "choix": ["0 °C", "56 °C", "100 °C"],
+      "bonne_reponse": 0,
+      "correction": "À la pression atmosphérique, l'eau pure se solidifie à 0 °C."
+    },
+    {
+      "type": "qcm",
+      "question": "À quelle température l'eau pure bout-elle à la pression atmosphérique ?",
+      "choix": ["0 °C", "80,7 °C", "100 °C"],
+      "bonne_reponse": 2,
+      "correction": "À la pression atmosphérique, l'eau pure bout à 100 °C."
+    },
+    {
+      "type": "libre",
+      "question": "Quel est le rôle de la pression dans une expérience avec une pompe à vide ?",
+      "correction": "La pompe retire de l'air, donc la pression diminue. Cette diminution peut modifier la température de changement d'état."
+    },
+    {
+      "type": "carte",
+      "question": "Pourquoi une courbe de changement d'état d'un corps pur présente-t-elle souvent un palier ?",
+      "correction": "Parce que, pour un corps pur, le changement d'état se fait à température constante."
+    },
+    {
+      "type": "erreur",
+      "question": "Corrige l'erreur : tous les corps purs changent d'état à la même température.",
+      "correction": "C'est faux. Chaque corps pur possède ses propres températures de changement d'état. Par exemple, l'eau bout à 100 °C alors que l'acétone bout à 56 °C à la pression atmosphérique."
+    },
+    {
+      "type": "libre",
+      "question": "Explique en une phrase ce que montre l'expérience où l'on fait bouillir de l'eau à pression réduite.",
+      "correction": "Elle montre que la pression influence la température d'ébullition : quand la pression diminue, l'eau peut bouillir à une température plus basse."
+    }
+  ]
+}
