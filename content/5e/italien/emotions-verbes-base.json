@@ -1,0 +1,25 @@
+{
+  "id": "italien-emotions-verbes-base-5e",
+  "niveau": "5e",
+  "matiere": "Italien",
+  "titre": "Émotions, être, avoir, aller, rester",
+  "duree_minutes": 10,
+  "mots_cles": ["emozioni", "essere", "avere", "andare", "stare"],
+  "cours_court": [
+    "Les adjectifs s'accordent souvent au masculin ou au féminin : contento / contenta.",
+    "Essere signifie être : sono, sei, è, siamo, siete, sono.",
+    "Avere signifie avoir : ho, hai, ha, abbiamo, avete, hanno.",
+    "Andare signifie aller : vado, vai, va, andiamo, andate, vanno.",
+    "Stare peut signifier aller / être dans un état : sto, stai, sta, stiamo, state, stanno."
+  ],
+  "questions": [
+    { "type": "qcm", "question": "Comment dit-on : je suis contente, si c'est une fille qui parle ?", "choix": ["Sono contento", "Sono contenta", "Ho contenta"], "bonne_reponse": 1, "correction": "Une fille dit : sono contenta. L'adjectif est au féminin." },
+    { "type": "libre", "question": "Conjugue essere avec io.", "correction": "Io sono." },
+    { "type": "libre", "question": "Conjugue avere avec tu.", "correction": "Tu hai." },
+    { "type": "libre", "question": "Conjugue andare avec noi.", "correction": "Noi andiamo." },
+    { "type": "libre", "question": "Conjugue stare avec loro.", "correction": "Loro stanno." },
+    { "type": "qcm", "question": "Choisis la phrase correcte pour dire : il est triste.", "choix": ["Lui è triste", "Lui ha triste", "Lui sono triste"], "bonne_reponse": 0, "correction": "On dit : Lui è triste." },
+    { "type": "oral", "question": "Prépare une phrase pour dire comment tu vas aujourd'hui.", "correction": "Exemple : Oggi sto bene. / Oggi sono contenta. / Oggi sono stanca." },
+    { "type": "erreur", "question": "Corrige l'erreur : Io ha tredici anni.", "correction": "On dit : Io ho tredici anni. Avec io, le verbe avere devient ho." }
+  ]
+}
