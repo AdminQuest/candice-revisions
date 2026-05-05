@@ -1,0 +1,21 @@
+{
+  "id": "maths-parallelogrammes-5e",
+  "niveau": "5e",
+  "matiere": "Mathématiques",
+  "titre": "Parallélogrammes",
+  "duree_minutes": 10,
+  "mots_cles": ["quadrilatère", "côtés opposés", "diagonales", "milieu"],
+  "cours_court": [
+    "Un parallélogramme est un quadrilatère dont les côtés opposés sont parallèles deux à deux.",
+    "Dans un parallélogramme, les côtés opposés ont la même longueur.",
+    "Dans un parallélogramme, les diagonales se coupent en leur milieu.",
+    "Pour justifier, il faut citer une propriété puis conclure."
+  ],
+  "questions": [
+    { "type": "carte", "question": "Qu'est-ce qu'un parallélogramme ?", "correction": "C'est un quadrilatère dont les côtés opposés sont parallèles deux à deux." },
+    { "type": "carte", "question": "Que peut-on dire des diagonales d'un parallélogramme ?", "correction": "Elles se coupent en leur milieu." },
+    { "type": "qcm", "question": "Quel énoncé permet de prouver qu'un quadrilatère est un parallélogramme ?", "choix": ["Il a quatre côtés.", "Ses diagonales se coupent en leur milieu.", "Il a deux côtés de même longueur."], "bonne_reponse": 1, "correction": "Si les diagonales d'un quadrilatère se coupent en leur milieu, alors ce quadrilatère est un parallélogramme." },
+    { "type": "libre", "question": "Complète : dans un parallélogramme, les côtés opposés sont...", "correction": "Les côtés opposés sont parallèles et de même longueur." },
+    { "type": "libre", "question": "Rédige une justification en deux phrases pour prouver qu'ABCD est un parallélogramme si ses diagonales se coupent en leur milieu.", "correction": "Les diagonales du quadrilatère ABCD se coupent en leur milieu. Or, si un quadrilatère a ses diagonales qui se coupent en leur milieu, alors c'est un parallélogramme. Donc ABCD est un parallélogramme." }
+  ]
+}
