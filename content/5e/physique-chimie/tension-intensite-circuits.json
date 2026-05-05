@@ -1,0 +1,23 @@
+{
+  "id": "physique-tension-intensite-circuits-5e",
+  "niveau": "5e",
+  "matiere": "Physique-chimie",
+  "titre": "Tension, intensité et circuits",
+  "duree_minutes": 10,
+  "mots_cles": ["tension", "intensité", "voltmètre", "ampèremètre", "circuit"],
+  "cours_court": [
+    "La tension se note U et se mesure en volts, symbole V.",
+    "L'intensité se note I et se mesure en ampères, symbole A.",
+    "Un voltmètre se branche en dérivation, aux bornes du dipôle.",
+    "Un ampèremètre se branche en série, dans la boucle du circuit.",
+    "Si le circuit est ouvert, le courant ne circule pas et la lampe ne brille pas."
+  ],
+  "questions": [
+    { "type": "carte", "question": "Quelle grandeur mesure-t-on en volts ?", "correction": "On mesure la tension, notée U." },
+    { "type": "carte", "question": "Quelle grandeur mesure-t-on en ampères ?", "correction": "On mesure l'intensité, notée I." },
+    { "type": "qcm", "question": "Comment branche-t-on un voltmètre ?", "choix": ["En série", "En dérivation", "À la place de la pile"], "bonne_reponse": 1, "correction": "Un voltmètre se branche en dérivation, aux bornes du dipôle." },
+    { "type": "qcm", "question": "Comment branche-t-on un ampèremètre ?", "choix": ["En série", "En dérivation", "En dehors du circuit"], "bonne_reponse": 0, "correction": "Un ampèremètre se branche en série." },
+    { "type": "libre", "question": "Explique pourquoi une lampe ne brille pas si l'interrupteur est ouvert.", "correction": "La lampe ne brille pas parce que le circuit est ouvert : le courant ne circule pas." },
+    { "type": "erreur", "question": "Corrige l'erreur : la tension se mesure avec un ampèremètre branché en série.", "correction": "La tension se mesure avec un voltmètre branché en dérivation." }
+  ]
+}
