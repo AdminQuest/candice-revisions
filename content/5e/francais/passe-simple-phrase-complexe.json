@@ -1,0 +1,22 @@
+{
+  "id": "francais-passe-simple-phrase-complexe-5e",
+  "niveau": "5e",
+  "matiere": "Français",
+  "titre": "Passé simple et phrase complexe",
+  "duree_minutes": 10,
+  "mots_cles": ["passé simple", "récit", "verbe conjugué", "phrase complexe"],
+  "cours_court": [
+    "Le passé simple est un temps du récit.",
+    "Il sert souvent à raconter une action passée, brève ou principale.",
+    "Une phrase complexe contient plusieurs verbes conjugués.",
+    "Pour repérer les propositions, on repère d'abord les verbes conjugués."
+  ],
+  "questions": [
+    { "type": "carte", "question": "À quoi sert le passé simple ?", "correction": "Il sert à raconter une action passée, souvent brève ou principale, dans un récit." },
+    { "type": "libre", "question": "Conjugue entrer au passé simple à la 3e personne du singulier.", "correction": "Il entra." },
+    { "type": "libre", "question": "Conjugue finir au passé simple à la 3e personne du pluriel.", "correction": "Ils finirent." },
+    { "type": "libre", "question": "Repère les verbes conjugués : Le garçon ouvrit la porte et découvrit une pièce sombre.", "correction": "Les verbes conjugués sont ouvrit et découvrit." },
+    { "type": "qcm", "question": "Une phrase complexe contient...", "choix": ["un seul mot important", "plusieurs verbes conjugués", "toujours une virgule"], "bonne_reponse": 1, "correction": "Une phrase complexe contient plusieurs verbes conjugués." },
+    { "type": "reponse_longue", "question": "Améliore cette réponse : Le personnage a peur.", "correction_minimale": "Le personnage a peur.", "correction_correcte": "Le personnage a peur car il hésite avant d'entrer dans la pièce sombre.", "correction_complete": "Le personnage semble effrayé car le texte insiste sur la pièce sombre et sur son hésitation avant d'entrer. Ces détails créent une atmosphère inquiétante et montrent qu'il redoute ce qu'il va découvrir." }
+  ]
+}
