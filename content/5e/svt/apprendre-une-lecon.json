@@ -1,0 +1,22 @@
+{
+  "id": "svt-apprendre-une-lecon-5e",
+  "niveau": "5e",
+  "matiere": "SVT",
+  "titre": "Apprendre une leçon de SVT",
+  "duree_minutes": 10,
+  "mots_cles": ["thème", "mots scientifiques", "définition", "schéma", "conclusion"],
+  "cours_court": [
+    "Pour apprendre une leçon de SVT, il faut connaître le thème étudié.",
+    "Il faut retenir les mots scientifiques importants et leurs définitions.",
+    "Il faut savoir expliquer le schéma ou le document principal.",
+    "Il faut être capable de rédiger la conclusion sans regarder le cahier."
+  ],
+  "questions": [
+    { "type": "libre", "question": "Écris le titre de ta dernière leçon de SVT.", "correction": "Compare avec ton cahier : le titre doit être complet et correctement orthographié." },
+    { "type": "libre", "question": "Écris trois mots scientifiques importants de la leçon.", "correction": "Les mots doivent venir du cours et être compris, pas seulement recopiés." },
+    { "type": "libre", "question": "Donne une définition importante de la leçon.", "correction": "La définition doit être courte, précise et utiliser les mots scientifiques du cours." },
+    { "type": "libre", "question": "Explique un schéma ou un document en deux phrases.", "correction": "Il faut dire ce que le document montre, puis ce qu'il permet de comprendre." },
+    { "type": "qcm", "question": "Quelle méthode est la plus efficace pour apprendre une leçon de SVT ?", "choix": ["Relire plusieurs fois sans se tester", "Fermer le cahier et essayer de répondre à des questions", "Apprendre seulement le titre"], "bonne_reponse": 1, "correction": "Le rappel actif est plus efficace qu'une simple relecture." },
+    { "type": "erreur", "question": "Corrige l'erreur : J'ai appris ma leçon si j'ai seulement relu le cahier.", "correction": "Relire ne suffit pas. Il faut être capable de répondre sans le cahier, définir les mots importants et expliquer le schéma ou la conclusion." }
+  ]
+}
