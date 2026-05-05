@@ -1,0 +1,21 @@
+{
+  "id": "histoire-geographie-question-longue-5e",
+  "niveau": "5e",
+  "matiere": "Histoire-géographie",
+  "titre": "Répondre à une question longue",
+  "duree_minutes": 10,
+  "mots_cles": ["répondre", "justifier", "exemple", "car"],
+  "cours_court": [
+    "Une bonne réponse commence par une réponse directe à la question.",
+    "Il faut ensuite justifier avec une connaissance du cours.",
+    "Il faut donner un exemple précis quand c'est possible.",
+    "La formule utile est : on peut dire que..., car..., par exemple..."
+  ],
+  "questions": [
+    { "type": "carte", "question": "Quelles sont les trois étapes d'une réponse longue ?", "correction": "Répondre directement, justifier avec le cours, donner un exemple précis." },
+    { "type": "libre", "question": "Écris une phrase qui utilise le mot car.", "correction": "Exemple : Les grandes villes attirent des habitants car elles concentrent des emplois et des services." },
+    { "type": "libre", "question": "Donne trois éléments qui rendent une grande ville attractive.", "correction": "Les emplois, les services, les commerces, les établissements scolaires, les hôpitaux ou les transports." },
+    { "type": "reponse_longue", "question": "Pourquoi les grandes villes attirent-elles des habitants ?", "correction_minimale": "Les grandes villes attirent des habitants parce qu'il y a du travail.", "correction_correcte": "Les grandes villes attirent des habitants car elles concentrent des emplois, des services et des transports.", "correction_complete": "Les grandes villes attirent des habitants car elles concentrent des emplois, des services, des commerces, des établissements scolaires et des transports. Elles offrent donc davantage de possibilités pour travailler, étudier ou se déplacer. Par exemple, une métropole attire des habitants grâce à ses hôpitaux, ses universités et ses réseaux de transport." },
+    { "type": "erreur", "question": "Améliore cette réponse trop courte : Les villes attirent parce qu'il y a du travail.", "correction": "Les villes attirent des habitants car elles concentrent des emplois, des services, des commerces et des transports. Elles offrent donc plus de possibilités pour travailler, étudier ou se déplacer." }
+  ]
+}
