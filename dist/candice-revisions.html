@@ -1,1 +1,311 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4efe7">
+  <title>Candice Révisions</title>
+  <style>:root {
+  color-scheme: light;
+  --bg: #f7f2ea;
+  --panel: #fffaf2;
+  --text: #2b2723;
+  --muted: #6f675f;
+  --line: #ded4c6;
+  --accent: #8f5f35;
+  --accent-dark: #684320;
+  --good: #246b45;
+  --warn: #9a5b00;
+  --bad: #9b2f2f;
+  --shadow: 0 14px 34px rgba(70, 49, 29, .10);
+}
 
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+
+.app-shell {
+  width: min(1100px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+h1, h2, h3 { margin: 0 0 8px; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4vw, 3rem); }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1rem; }
+p { margin: 0 0 10px; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.toolbar, .filters, .actions, .question-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.filters { margin: 12px 0; }
+
+select, input[type="search"], textarea {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: white;
+  color: var(--text);
+}
+
+textarea {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  margin: 10px 0;
+}
+
+.btn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: white;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 650;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--accent-dark);
+}
+
+.btn.ghost {
+  border-color: var(--line);
+  background: white;
+  color: var(--text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+}
+
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 4px 9px;
+  font-size: .82rem;
+  color: var(--muted);
+  background: rgba(255,255,255,.65);
+}
+
+.small { color: var(--muted); font-size: .92rem; }
+
+.course-box {
+  border-left: 4px solid var(--accent);
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+ul { margin: 8px 0 0; padding-left: 20px; }
+
+.question-box {
+  margin-top: 14px;
+}
+
+.progress {
+  height: 10px;
+  background: #eadfce;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0 14px;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+}
+
+.choice {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+  margin: 8px 0;
+}
+.choice.selected { outline: 2px solid var(--accent); }
+.choice.correct { border-color: var(--good); }
+.choice.wrong { border-color: var(--bad); }
+
+.correction {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.levels {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.levels div { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 10px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 10px;
+}
+.stat strong { font-size: 1.6rem; display: block; }
+
+.hidden { display: none !important; }
+
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .app-shell { width: min(100% - 16px, 1100px); padding-top: 12px; }
+  .card { border-radius: 18px; padding: 14px; }
+}
+</style>
+</head>
+<body>
+  <main id="app"></main>
+  <script>window.REVISIONS = [{"id":"anglais-presenter-personnage-celebre-5e","niveau":"5e","matiere":"Anglais","titre":"Présenter un personnage célèbre","duree_minutes":10,"mots_cles":["name","age","job","nationality","personality"],"cours_court":["Pour présenter une personne, on donne son nom, son âge ou sa date de naissance, sa nationalité et son métier.","On utilise he pour un homme, she pour une femme.","On peut ajouter une opinion : I think this person is important because...","Une bonne présentation utilise des phrases simples mais complètes."],"questions":[{"type":"carte","question":"Comment dit-on : il est français ?","correction":"He is French."},{"type":"carte","question":"Comment dit-on : elle est chanteuse ?","correction":"She is a singer."},{"type":"libre","question":"Complète : His name ... Victor Hugo.","correction":"His name is Victor Hugo."},{"type":"libre","question":"Écris une phrase pour dire qu'une personne est courageuse.","correction":"He is brave. / She is brave."},{"type":"qcm","question":"Quelle phrase donne une opinion correcte ?","choix":["I think she is important because she helped people.","I am think she important.","She important because."],"bonne_reponse":0,"correction":"La phrase correcte est : I think she is important because she helped people."},{"type":"oral","question":"Présente un personnage célèbre en trois phrases.","correction":"Exemple : Her name is Marie Curie. She was a scientist. I think she is important because she discovered radioactivity."},{"type":"reponse_longue","question":"Présente un personnage célèbre en anglais.","correction_minimale":"Her name is Marie Curie. She was a scientist.","correction_correcte":"Her name is Marie Curie. She was a Polish and French scientist. She is famous because she worked on radioactivity.","correction_complete":"Her name is Marie Curie. She was a Polish and French scientist. She is famous because she worked on radioactivity and received two Nobel Prizes. I think she is important because her discoveries changed science."}]},{"id":"francais-passe-simple-phrase-complexe-5e","niveau":"5e","matiere":"Français","titre":"Passé simple et phrase complexe","duree_minutes":10,"mots_cles":["passé simple","récit","verbe conjugué","phrase complexe"],"cours_court":["Le passé simple est un temps du récit.","Il sert souvent à raconter une action passée, brève ou principale.","Une phrase complexe contient plusieurs verbes conjugués.","Pour repérer les propositions, on repère d'abord les verbes conjugués."],"questions":[{"type":"carte","question":"À quoi sert le passé simple ?","correction":"Il sert à raconter une action passée, souvent brève ou principale, dans un récit."},{"type":"libre","question":"Conjugue entrer au passé simple à la 3e personne du singulier.","correction":"Il entra."},{"type":"libre","question":"Conjugue finir au passé simple à la 3e personne du pluriel.","correction":"Ils finirent."},{"type":"libre","question":"Repère les verbes conjugués : Le garçon ouvrit la porte et découvrit une pièce sombre.","correction":"Les verbes conjugués sont ouvrit et découvrit."},{"type":"qcm","question":"Une phrase complexe contient...","choix":["un seul mot important","plusieurs verbes conjugués","toujours une virgule"],"bonne_reponse":1,"correction":"Une phrase complexe contient plusieurs verbes conjugués."},{"type":"reponse_longue","question":"Améliore cette réponse : Le personnage a peur.","correction_minimale":"Le personnage a peur.","correction_correcte":"Le personnage a peur car il hésite avant d'entrer dans la pièce sombre.","correction_complete":"Le personnage semble effrayé car le texte insiste sur la pièce sombre et sur son hésitation avant d'entrer. Ces détails créent une atmosphère inquiétante et montrent qu'il redoute ce qu'il va découvrir."}]},{"id":"histoire-geographie-question-longue-5e","niveau":"5e","matiere":"Histoire-géographie","titre":"Répondre à une question longue","duree_minutes":10,"mots_cles":["répondre","justifier","exemple","car"],"cours_court":["Une bonne réponse commence par une réponse directe à la question.","Il faut ensuite justifier avec une connaissance du cours.","Il faut donner un exemple précis quand c'est possible.","La formule utile est : on peut dire que..., car..., par exemple..."],"questions":[{"type":"carte","question":"Quelles sont les trois étapes d'une réponse longue ?","correction":"Répondre directement, justifier avec le cours, donner un exemple précis."},{"type":"libre","question":"Écris une phrase qui utilise le mot car.","correction":"Exemple : Les grandes villes attirent des habitants car elles concentrent des emplois et des services."},{"type":"libre","question":"Donne trois éléments qui rendent une grande ville attractive.","correction":"Les emplois, les services, les commerces, les établissements scolaires, les hôpitaux ou les transports."},{"type":"reponse_longue","question":"Pourquoi les grandes villes attirent-elles des habitants ?","correction_minimale":"Les grandes villes attirent des habitants parce qu'il y a du travail.","correction_correcte":"Les grandes villes attirent des habitants car elles concentrent des emplois, des services et des transports.","correction_complete":"Les grandes villes attirent des habitants car elles concentrent des emplois, des services, des commerces, des établissements scolaires et des transports. Elles offrent donc davantage de possibilités pour travailler, étudier ou se déplacer. Par exemple, une métropole attire des habitants grâce à ses hôpitaux, ses universités et ses réseaux de transport."},{"type":"erreur","question":"Améliore cette réponse trop courte : Les villes attirent parce qu'il y a du travail.","correction":"Les villes attirent des habitants car elles concentrent des emplois, des services, des commerces et des transports. Elles offrent donc plus de possibilités pour travailler, étudier ou se déplacer."}]},{"id":"italien-emotions-verbes-base-5e","niveau":"5e","matiere":"Italien","titre":"Émotions, être, avoir, aller, rester","duree_minutes":10,"mots_cles":["emozioni","essere","avere","andare","stare"],"cours_court":["Les adjectifs s'accordent souvent au masculin ou au féminin : contento / contenta.","Essere signifie être : sono, sei, è, siamo, siete, sono.","Avere signifie avoir : ho, hai, ha, abbiamo, avete, hanno.","Andare signifie aller : vado, vai, va, andiamo, andate, vanno.","Stare peut signifier aller / être dans un état : sto, stai, sta, stiamo, state, stanno."],"questions":[{"type":"qcm","question":"Comment dit-on : je suis contente, si c'est une fille qui parle ?","choix":["Sono contento","Sono contenta","Ho contenta"],"bonne_reponse":1,"correction":"Une fille dit : sono contenta. L'adjectif est au féminin."},{"type":"libre","question":"Conjugue essere avec io.","correction":"Io sono."},{"type":"libre","question":"Conjugue avere avec tu.","correction":"Tu hai."},{"type":"libre","question":"Conjugue andare avec noi.","correction":"Noi andiamo."},{"type":"libre","question":"Conjugue stare avec loro.","correction":"Loro stanno."},{"type":"qcm","question":"Choisis la phrase correcte pour dire : il est triste.","choix":["Lui è triste","Lui ha triste","Lui sono triste"],"bonne_reponse":0,"correction":"On dit : Lui è triste."},{"type":"oral","question":"Prépare une phrase pour dire comment tu vas aujourd'hui.","correction":"Exemple : Oggi sto bene. / Oggi sono contenta. / Oggi sono stanca."},{"type":"erreur","question":"Corrige l'erreur : Io ha tredici anni.","correction":"On dit : Io ho tredici anni. Avec io, le verbe avere devient ho."}]},{"id":"maths-fractions-5e","niveau":"5e","matiere":"Mathématiques","titre":"Fractions","duree_minutes":10,"mots_cles":["fraction","numérateur","dénominateur","simplifier"],"cours_court":["Une fraction représente une part d'un tout ou un quotient.","Le numérateur est le nombre du haut.","Le dénominateur est le nombre du bas.","Pour additionner deux fractions de même dénominateur, on additionne les numérateurs et on garde le dénominateur."],"questions":[{"type":"carte","question":"Qu'est-ce que le numérateur ?","correction":"C'est le nombre placé au-dessus de la barre de fraction."},{"type":"carte","question":"Qu'est-ce que le dénominateur ?","correction":"C'est le nombre placé sous la barre de fraction. Il indique en combien de parts égales on partage l'unité."},{"type":"libre","question":"Simplifie 6/8.","correction":"6/8 = 3/4."},{"type":"libre","question":"Calcule 3/7 + 2/7.","correction":"3/7 + 2/7 = 5/7."},{"type":"qcm","question":"Pour additionner 2/5 + 1/5, quelle réponse est correcte ?","choix":["3/10","3/5","2/10"],"bonne_reponse":1,"correction":"On garde le dénominateur 5 et on additionne seulement les numérateurs : 3/5."},{"type":"erreur","question":"Corrige l'erreur : 2/5 + 1/5 = 3/10.","correction":"Le dénominateur ne change pas. La bonne réponse est 3/5."}]},{"id":"maths-parallelogrammes-5e","niveau":"5e","matiere":"Mathématiques","titre":"Parallélogrammes","duree_minutes":10,"mots_cles":["quadrilatère","côtés opposés","diagonales","milieu"],"cours_court":["Un parallélogramme est un quadrilatère dont les côtés opposés sont parallèles deux à deux.","Dans un parallélogramme, les côtés opposés ont la même longueur.","Dans un parallélogramme, les diagonales se coupent en leur milieu.","Pour justifier, il faut citer une propriété puis conclure."],"questions":[{"type":"carte","question":"Qu'est-ce qu'un parallélogramme ?","correction":"C'est un quadrilatère dont les côtés opposés sont parallèles deux à deux."},{"type":"carte","question":"Que peut-on dire des diagonales d'un parallélogramme ?","correction":"Elles se coupent en leur milieu."},{"type":"qcm","question":"Quel énoncé permet de prouver qu'un quadrilatère est un parallélogramme ?","choix":["Il a quatre côtés.","Ses diagonales se coupent en leur milieu.","Il a deux côtés de même longueur."],"bonne_reponse":1,"correction":"Si les diagonales d'un quadrilatère se coupent en leur milieu, alors ce quadrilatère est un parallélogramme."},{"type":"libre","question":"Complète : dans un parallélogramme, les côtés opposés sont...","correction":"Les côtés opposés sont parallèles et de même longueur."},{"type":"libre","question":"Rédige une justification en deux phrases pour prouver qu'ABCD est un parallélogramme si ses diagonales se coupent en leur milieu.","correction":"Les diagonales du quadrilatère ABCD se coupent en leur milieu. Or, si un quadrilatère a ses diagonales qui se coupent en leur milieu, alors c'est un parallélogramme. Donc ABCD est un parallélogramme."}]},{"id":"physique-tension-intensite-circuits-5e","niveau":"5e","matiere":"Physique-chimie","titre":"Tension, intensité et circuits","duree_minutes":10,"mots_cles":["tension","intensité","voltmètre","ampèremètre","circuit"],"cours_court":["La tension se note U et se mesure en volts, symbole V.","L'intensité se note I et se mesure en ampères, symbole A.","Un voltmètre se branche en dérivation, aux bornes du dipôle.","Un ampèremètre se branche en série, dans la boucle du circuit.","Si le circuit est ouvert, le courant ne circule pas et la lampe ne brille pas."],"questions":[{"type":"carte","question":"Quelle grandeur mesure-t-on en volts ?","correction":"On mesure la tension, notée U."},{"type":"carte","question":"Quelle grandeur mesure-t-on en ampères ?","correction":"On mesure l'intensité, notée I."},{"type":"qcm","question":"Comment branche-t-on un voltmètre ?","choix":["En série","En dérivation","À la place de la pile"],"bonne_reponse":1,"correction":"Un voltmètre se branche en dérivation, aux bornes du dipôle."},{"type":"qcm","question":"Comment branche-t-on un ampèremètre ?","choix":["En série","En dérivation","En dehors du circuit"],"bonne_reponse":0,"correction":"Un ampèremètre se branche en série."},{"type":"libre","question":"Explique pourquoi une lampe ne brille pas si l'interrupteur est ouvert.","correction":"La lampe ne brille pas parce que le circuit est ouvert : le courant ne circule pas."},{"type":"erreur","question":"Corrige l'erreur : la tension se mesure avec un ampèremètre branché en série.","correction":"La tension se mesure avec un voltmètre branché en dérivation."}]},{"id":"svt-apprendre-une-lecon-5e","niveau":"5e","matiere":"SVT","titre":"Apprendre une leçon de SVT","duree_minutes":10,"mots_cles":["thème","mots scientifiques","définition","schéma","conclusion"],"cours_court":["Pour apprendre une leçon de SVT, il faut connaître le thème étudié.","Il faut retenir les mots scientifiques importants et leurs définitions.","Il faut savoir expliquer le schéma ou le document principal.","Il faut être capable de rédiger la conclusion sans regarder le cahier."],"questions":[{"type":"libre","question":"Écris le titre de ta dernière leçon de SVT.","correction":"Compare avec ton cahier : le titre doit être complet et correctement orthographié."},{"type":"libre","question":"Écris trois mots scientifiques importants de la leçon.","correction":"Les mots doivent venir du cours et être compris, pas seulement recopiés."},{"type":"libre","question":"Donne une définition importante de la leçon.","correction":"La définition doit être courte, précise et utiliser les mots scientifiques du cours."},{"type":"libre","question":"Explique un schéma ou un document en deux phrases.","correction":"Il faut dire ce que le document montre, puis ce qu'il permet de comprendre."},{"type":"qcm","question":"Quelle méthode est la plus efficace pour apprendre une leçon de SVT ?","choix":["Relire plusieurs fois sans se tester","Fermer le cahier et essayer de répondre à des questions","Apprendre seulement le titre"],"bonne_reponse":1,"correction":"Le rappel actif est plus efficace qu'une simple relecture."},{"type":"erreur","question":"Corrige l'erreur : J'ai appris ma leçon si j'ai seulement relu le cahier.","correction":"Relire ne suffit pas. Il faut être capable de répondre sans le cahier, définir les mots importants et expliquer le schéma ou la conclusion."}]}];</script>
+  <script>const DATA = window.REVISIONS || [];
+const KEY = 'candice-revisions-v1';
+let progress = JSON.parse(localStorage.getItem(KEY) || '{}');
+let current = null;
+let session = [];
+let idx = 0;
+let revealed = false;
+let selected = null;
+
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const save = () => localStorage.setItem(KEY, JSON.stringify(progress));
+const shuffle = (a) => [...a].sort(() => Math.random() - 0.5);
+const qkey = (lesson, q) => `${lesson.id}::${lesson.questions.indexOf(q)}`;
+
+function start(id, mode) {
+  current = DATA.find(x => x.id === id);
+  if (!current) return;
+  session = [...current.questions];
+  if (mode === 'quick') session = shuffle(session).slice(0, 5);
+  if (mode === 'errors') {
+    session = session.filter(q => (progress[qkey(current, q)]?.revoir || 0) > 0);
+    if (!session.length) session = [...current.questions];
+  }
+  idx = 0; revealed = false; selected = null;
+  renderLesson();
+}
+
+function mark(status) {
+  const q = session[idx];
+  const k = qkey(current, q);
+  const p = progress[k] || { attempts: 0, ok: 0, almost: 0, revoir: 0 };
+  p.attempts += 1; p[status] += 1;
+  p.matiere = current.matiere; p.titre = current.titre; p.question = q.question; p.last = new Date().toISOString();
+  progress[k] = p; save();
+  if (idx < session.length - 1) { idx++; revealed = false; selected = null; renderLesson(); }
+  else renderEnd();
+}
+
+function renderHome() {
+  const app = $('#app');
+  const matieres = ['Toutes', ...new Set(DATA.map(x => x.matiere))];
+  const attempts = Object.values(progress).reduce((s, p) => s + (p.attempts || 0), 0);
+  const revoir = Object.values(progress).filter(p => (p.revoir || 0) > 0).length;
+  app.className = 'app-shell';
+  app.innerHTML = `<section class="hero"><div><h1>Candice Révisions</h1><p class="small">Révisions courtes, corrections immédiates, erreurs à refaire.</p></div><button class="btn ghost" id="reset">Effacer les progrès</button></section><section class="stats"><div class="card stat"><strong>${DATA.length}</strong><span class="small">leçons</span></div><div class="card stat"><strong>${DATA.reduce((s,x)=>s+x.questions.length,0)}</strong><span class="small">questions</span></div><div class="card stat"><strong>${attempts}</strong><span class="small">réponses</span></div><div class="card stat"><strong>${revoir}</strong><span class="small">à revoir</span></div></section><section class="card" style="margin-top:14px"><h2>Choisir une leçon</h2><div class="filters"><select id="mat">${matieres.map(m=>`<option>${esc(m)}</option>`).join('')}</select><input id="search" type="search" placeholder="Rechercher"></div><div class="grid" id="grid"></div></section>`;
+  $('#reset').onclick = () => { if (confirm('Effacer les progrès sur cet appareil ?')) { progress = {}; save(); renderHome(); } };
+  $('#mat').onchange = paintGrid;
+  $('#search').oninput = paintGrid;
+  paintGrid();
+}
+
+function paintGrid() {
+  const mat = $('#mat').value;
+  const term = $('#search').value.toLowerCase();
+  const lessons = DATA.filter(x => (mat === 'Toutes' || x.matiere === mat) && `${x.titre} ${x.matiere} ${(x.mots_cles||[]).join(' ')}`.toLowerCase().includes(term));
+  $('#grid').innerHTML = lessons.map(x => `<article class="card lesson-card"><div><span class="badge">${esc(x.niveau)}</span> <span class="badge">${esc(x.matiere)}</span></div><h3>${esc(x.titre)}</h3><p class="small">${x.questions.length} questions · ${x.duree_minutes || 10} min</p><div>${(x.mots_cles||[]).slice(0,4).map(w=>`<span class="badge">${esc(w)}</span>`).join(' ')}</div><div class="actions"><button class="btn" data-id="${esc(x.id)}" data-mode="quick">5 questions</button><button class="btn secondary" data-id="${esc(x.id)}" data-mode="all">Tout faire</button><button class="btn ghost" data-id="${esc(x.id)}" data-mode="errors">Erreurs</button></div></article>`).join('');
+  document.querySelectorAll('[data-id]').forEach(b => b.onclick = () => start(b.dataset.id, b.dataset.mode));
+}
+
+function renderLesson() {
+  const q = session[idx];
+  const pct = Math.round(((idx + 1) / session.length) * 100);
+  $('#app').innerHTML = `<section class="card"><div class="toolbar"><button class="btn ghost" id="home">Accueil</button><span class="badge">${esc(current.matiere)}</span></div><h1>${esc(current.titre)}</h1>${course()}<div class="progress"><span style="width:${pct}%"></span></div><p class="small">Question ${idx + 1} / ${session.length}</p><div class="question-box">${question(q)}</div></section>`;
+  $('#home').onclick = renderHome;
+  const reveal = $('#reveal'); if (reveal) reveal.onclick = () => { revealed = true; renderLesson(); };
+  document.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { selected = Number(b.dataset.choice); revealed = true; renderLesson(); });
+  document.querySelectorAll('[data-mark]').forEach(b => b.onclick = () => mark(b.dataset.mark));
+}
+
+function course() {
+  if (!current.cours_court?.length) return '';
+  return `<div class="course-box"><strong>À retenir</strong><ul>${current.cours_court.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+}
+
+function question(q) {
+  let body = '';
+  if (q.type === 'qcm') body = (q.choix||[]).map((c,i)=>`<button class="choice ${selected===i?'selected':''}" data-choice="${i}">${esc(c)}</button>`).join('');
+  else body = `<textarea placeholder="Écris ta réponse ici."></textarea><button class="btn" id="reveal">Voir la correction</button>`;
+  return `<h2>${esc(q.question)}</h2><p class="small">${esc(q.type)}</p>${body}${revealed ? correction(q) : ''}`;
+}
+
+function correction(q) {
+  let c = '';
+  if (q.type === 'qcm') c = `<p><strong>${selected === q.bonne_reponse ? 'Bonne réponse.' : 'À corriger.'}</strong></p><p>${esc(q.correction || q.choix?.[q.bonne_reponse])}</p>`;
+  else if (q.type === 'reponse_longue') c = `<div class="levels"><div><strong>Minimale</strong><br>${esc(q.correction_minimale)}</div><div><strong>Correcte</strong><br>${esc(q.correction_correcte)}</div><div><strong>Complète</strong><br>${esc(q.correction_complete)}</div></div>`;
+  else c = `<p>${esc(q.correction)}</p>`;
+  return `<div class="correction"><h3>Correction</h3>${c}<div class="question-actions"><button class="btn" data-mark="ok">Juste</button><button class="btn secondary" data-mark="almost">Presque</button><button class="btn ghost" data-mark="revoir">À revoir</button></div></div>`;
+}
+
+function renderEnd() {
+  $('#app').innerHTML = `<section class="card"><h1>Séance terminée</h1><p>Les progrès sont enregistrés sur cet appareil.</p><div class="actions"><button class="btn" id="again">Refaire</button><button class="btn secondary" id="errors">Refaire les erreurs</button><button class="btn ghost" id="home">Accueil</button></div></section>`;
+  $('#again').onclick = () => start(current.id, 'all');
+  $('#errors').onclick = () => start(current.id, 'errors');
+  $('#home').onclick = renderHome;
+}
+
+renderHome();
+</script>
+</body>
+</html>
