@@ -1,0 +1,56 @@
+{
+  "id": "physique-conversions-cloche-vide-ballon-5e",
+  "niveau": "5e",
+  "matiere": "Physique-chimie",
+  "titre": "Conversions et expérience de la cloche à vide",
+  "duree_minutes": 10,
+  "mots_cles": ["conversion", "pression", "cloche à vide", "ballon", "air"],
+  "cours_court": [
+    "Convertir, c'est exprimer une même grandeur avec une autre unité.",
+    "Avant de calculer, il faut repérer la grandeur et son unité.",
+    "Dans une cloche à vide, on retire une partie de l'air : la pression diminue.",
+    "Un ballon contient de l'air. Si la pression autour du ballon diminue, le ballon peut gonfler.",
+    "L'expérience montre que l'air est une matière : il occupe un volume et exerce une pression."
+  ],
+  "questions": [
+    {
+      "type": "carte",
+      "question": "Que signifie convertir une grandeur ?",
+      "correction": "Convertir, c'est exprimer une même grandeur avec une autre unité."
+    },
+    {
+      "type": "libre",
+      "question": "Convertis 2 L en mL.",
+      "correction": "2 L = 2000 mL."
+    },
+    {
+      "type": "libre",
+      "question": "Convertis 3500 mL en L.",
+      "correction": "3500 mL = 3,5 L."
+    },
+    {
+      "type": "qcm",
+      "question": "Dans l'expérience de la cloche à vide, que fait la pompe ?",
+      "choix": ["Elle ajoute de l'eau", "Elle retire de l'air", "Elle chauffe le ballon"],
+      "bonne_reponse": 1,
+      "correction": "La pompe retire une partie de l'air présent sous la cloche."
+    },
+    {
+      "type": "qcm",
+      "question": "Quand on retire de l'air sous la cloche, la pression...",
+      "choix": ["augmente", "diminue", "reste toujours identique"],
+      "bonne_reponse": 1,
+      "correction": "La pression diminue lorsque l'on retire de l'air."
+    },
+    {
+      "type": "libre",
+      "question": "Explique pourquoi le ballon gonfle sous une cloche à vide.",
+      "correction": "Le ballon gonfle parce que la pression autour de lui diminue quand on retire l'air sous la cloche. L'air contenu dans le ballon occupe alors davantage de volume."
+    },
+    {
+      "type": "erreur",
+      "question": "Corrige l'erreur : sous la cloche à vide, le ballon gonfle parce qu'on ajoute de l'air dans le ballon.",
+      "correction": "C'est faux. On n'ajoute pas d'air dans le ballon. On retire de l'air autour du ballon, donc la pression extérieure diminue."
+    }
+  ]
+}
