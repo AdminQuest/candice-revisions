@@ -1,0 +1,56 @@
+{
+  "id": "maths-chapitre-8-angles-opposes-sommet-5e",
+  "niveau": "5e",
+  "matiere": "Mathématiques",
+  "titre": "Chapitre 8 - Les angles : angles opposés par le sommet",
+  "duree_minutes": 10,
+  "mots_cles": ["angle", "sommet", "droites sécantes", "opposés par le sommet", "même mesure"],
+  "cours_court": [
+    "Deux angles opposés par le sommet sont formés par deux droites sécantes.",
+    "Ils ont le même sommet.",
+    "Leurs côtés sont dans le prolongement l'un de l'autre.",
+    "Deux angles opposés par le sommet ont la même mesure.",
+    "Pour justifier, il faut nommer la propriété puis conclure sur l'égalité des mesures."
+  ],
+  "questions": [
+    {
+      "type": "carte",
+      "question": "Quand dit-on que deux angles sont opposés par le sommet ?",
+      "correction": "Deux angles sont opposés par le sommet lorsqu'ils ont le même sommet et que leurs côtés sont dans le prolongement l'un de l'autre."
+    },
+    {
+      "type": "carte",
+      "question": "Quelle est la propriété des angles opposés par le sommet ?",
+      "correction": "Deux angles opposés par le sommet ont la même mesure."
+    },
+    {
+      "type": "qcm",
+      "question": "Deux droites sécantes forment deux angles opposés par le sommet. Le premier mesure 48°. Combien mesure l'autre ?",
+      "choix": ["48°", "42°", "132°"],
+      "bonne_reponse": 0,
+      "correction": "Deux angles opposés par le sommet ont la même mesure, donc l'autre angle mesure 48°."
+    },
+    {
+      "type": "libre",
+      "question": "Complète la phrase : si deux angles sont opposés par le sommet, alors ils ont...",
+      "correction": "Si deux angles sont opposés par le sommet, alors ils ont la même mesure."
+    },
+    {
+      "type": "erreur",
+      "question": "Corrige l'erreur : deux angles opposés par le sommet sont toujours supplémentaires.",
+      "correction": "C'est faux. Deux angles opposés par le sommet ont la même mesure. Ce sont deux angles adjacents formés par deux droites sécantes qui peuvent être supplémentaires."
+    },
+    {
+      "type": "libre",
+      "question": "Rédige une justification : les angles AOB et COD sont opposés par le sommet et l'angle AOB mesure 65°. Que peux-tu dire de l'angle COD ?",
+      "correction": "Les angles AOB et COD sont opposés par le sommet. Or deux angles opposés par le sommet ont la même mesure. Donc l'angle COD mesure 65°."
+    },
+    {
+      "type": "qcm",
+      "question": "Quel indice permet de reconnaître des angles opposés par le sommet sur une figure ?",
+      "choix": ["Ils sont côte à côte", "Ils sont formés par deux droites qui se coupent et ne sont pas adjacents", "Ils ont toujours un angle droit"],
+      "bonne_reponse": 1,
+      "correction": "Ils sont formés par deux droites qui se coupent, ont le même sommet et ne sont pas adjacents."
+    }
+  ]
+}
