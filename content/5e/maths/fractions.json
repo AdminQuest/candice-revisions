@@ -1,0 +1,22 @@
+{
+  "id": "maths-fractions-5e",
+  "niveau": "5e",
+  "matiere": "Mathématiques",
+  "titre": "Fractions",
+  "duree_minutes": 10,
+  "mots_cles": ["fraction", "numérateur", "dénominateur", "simplifier"],
+  "cours_court": [
+    "Une fraction représente une part d'un tout ou un quotient.",
+    "Le numérateur est le nombre du haut.",
+    "Le dénominateur est le nombre du bas.",
+    "Pour additionner deux fractions de même dénominateur, on additionne les numérateurs et on garde le dénominateur."
+  ],
+  "questions": [
+    { "type": "carte", "question": "Qu'est-ce que le numérateur ?", "correction": "C'est le nombre placé au-dessus de la barre de fraction." },
+    { "type": "carte", "question": "Qu'est-ce que le dénominateur ?", "correction": "C'est le nombre placé sous la barre de fraction. Il indique en combien de parts égales on partage l'unité." },
+    { "type": "libre", "question": "Simplifie 6/8.", "correction": "6/8 = 3/4." },
+    { "type": "libre", "question": "Calcule 3/7 + 2/7.", "correction": "3/7 + 2/7 = 5/7." },
+    { "type": "qcm", "question": "Pour additionner 2/5 + 1/5, quelle réponse est correcte ?", "choix": ["3/10", "3/5", "2/10"], "bonne_reponse": 1, "correction": "On garde le dénominateur 5 et on additionne seulement les numérateurs : 3/5." },
+    { "type": "erreur", "question": "Corrige l'erreur : 2/5 + 1/5 = 3/10.", "correction": "Le dénominateur ne change pas. La bonne réponse est 3/5." }
+  ]
+}
