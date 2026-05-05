@@ -1,0 +1,23 @@
+{
+  "id": "anglais-presenter-personnage-celebre-5e",
+  "niveau": "5e",
+  "matiere": "Anglais",
+  "titre": "Présenter un personnage célèbre",
+  "duree_minutes": 10,
+  "mots_cles": ["name", "age", "job", "nationality", "personality"],
+  "cours_court": [
+    "Pour présenter une personne, on donne son nom, son âge ou sa date de naissance, sa nationalité et son métier.",
+    "On utilise he pour un homme, she pour une femme.",
+    "On peut ajouter une opinion : I think this person is important because...",
+    "Une bonne présentation utilise des phrases simples mais complètes."
+  ],
+  "questions": [
+    { "type": "carte", "question": "Comment dit-on : il est français ?", "correction": "He is French." },
+    { "type": "carte", "question": "Comment dit-on : elle est chanteuse ?", "correction": "She is a singer." },
+    { "type": "libre", "question": "Complète : His name ... Victor Hugo.", "correction": "His name is Victor Hugo." },
+    { "type": "libre", "question": "Écris une phrase pour dire qu'une personne est courageuse.", "correction": "He is brave. / She is brave." },
+    { "type": "qcm", "question": "Quelle phrase donne une opinion correcte ?", "choix": ["I think she is important because she helped people.", "I am think she important.", "She important because."], "bonne_reponse": 0, "correction": "La phrase correcte est : I think she is important because she helped people." },
+    { "type": "oral", "question": "Présente un personnage célèbre en trois phrases.", "correction": "Exemple : Her name is Marie Curie. She was a scientist. I think she is important because she discovered radioactivity." },
+    { "type": "reponse_longue", "question": "Présente un personnage célèbre en anglais.", "correction_minimale": "Her name is Marie Curie. She was a scientist.", "correction_correcte": "Her name is Marie Curie. She was a Polish and French scientist. She is famous because she worked on radioactivity.", "correction_complete": "Her name is Marie Curie. She was a Polish and French scientist. She is famous because she worked on radioactivity and received two Nobel Prizes. I think she is important because her discoveries changed science." }
+  ]
+}
