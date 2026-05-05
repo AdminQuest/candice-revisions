@@ -1,0 +1,14 @@
+{
+  "name": "candice-revisions",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/generate.mjs",
+    "check": "node src/generate.mjs --check"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {}
+}
