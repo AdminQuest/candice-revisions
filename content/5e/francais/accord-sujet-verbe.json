@@ -1,0 +1,56 @@
+{
+  "id": "francais-accord-sujet-verbe-5e",
+  "niveau": "5e",
+  "matiere": "Français",
+  "titre": "Orthographe - L'accord sujet-verbe",
+  "duree_minutes": 10,
+  "mots_cles": ["sujet", "verbe", "accord", "personne", "nombre"],
+  "cours_court": [
+    "Le verbe s'accorde avec son sujet.",
+    "Pour accorder le verbe, il faut d'abord trouver le sujet en posant la question : qui est-ce qui ? ou qu'est-ce qui ?",
+    "Le sujet peut être placé avant ou après le verbe.",
+    "Quand il y a plusieurs sujets, le verbe se met généralement au pluriel.",
+    "Il faut se méfier des mots placés entre le sujet et le verbe : ils ne commandent pas l'accord."
+  ],
+  "questions": [
+    {
+      "type": "carte",
+      "question": "Avec quel mot le verbe s'accorde-t-il ?",
+      "correction": "Le verbe s'accorde avec son sujet."
+    },
+    {
+      "type": "carte",
+      "question": "Quelle question peut-on poser pour trouver le sujet ?",
+      "correction": "On peut poser : qui est-ce qui ? ou qu'est-ce qui ? avant le verbe."
+    },
+    {
+      "type": "qcm",
+      "question": "Choisis la phrase correctement accordée.",
+      "choix": ["Les arbres pousse vite.", "Les arbres poussent vite.", "Les arbres pousses vite."],
+      "bonne_reponse": 1,
+      "correction": "Le sujet Les arbres est au pluriel, donc le verbe se met au pluriel : poussent."
+    },
+    {
+      "type": "libre",
+      "question": "Trouve le sujet et accorde le verbe : Les élèves de la classe (écouter) la correction.",
+      "correction": "Le sujet est Les élèves. Il faut écrire : Les élèves de la classe écoutent la correction."
+    },
+    {
+      "type": "libre",
+      "question": "Accorde le verbe : Le chien et le chat (jouer) dans le jardin.",
+      "correction": "Le chien et le chat jouent dans le jardin. Il y a deux sujets, donc le verbe est au pluriel."
+    },
+    {
+      "type": "erreur",
+      "question": "Corrige l'erreur : La liste des exercices sont longue.",
+      "correction": "La liste des exercices est longue. Le sujet est La liste, singulier ; des exercices ne commande pas l'accord."
+    },
+    {
+      "type": "qcm",
+      "question": "Dans la phrase : Sous les arbres chantent les oiseaux, quel est le sujet ?",
+      "choix": ["Sous les arbres", "les arbres", "les oiseaux"],
+      "bonne_reponse": 2,
+      "correction": "Le sujet est les oiseaux. Le sujet peut être placé après le verbe."
+    }
+  ]
+}
