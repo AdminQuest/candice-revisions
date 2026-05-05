@@ -1,0 +1,56 @@
+{
+  "id": "francais-giono-homme-qui-plantait-des-arbres-lecture-progressive-5e",
+  "niveau": "5e",
+  "matiere": "Français",
+  "titre": "Lecture - Giono, L'homme qui plantait des arbres",
+  "duree_minutes": 10,
+  "mots_cles": ["Giono", "titre", "mots-clés", "hypothèse", "lecture progressive"],
+  "cours_court": [
+    "Dans une lecture à dévoilement progressif, on ne lit pas tout le texte d'un coup.",
+    "On repère d'abord les mots-clés d'une phrase ou d'un paragraphe.",
+    "On met ces mots en relation avec le titre pour formuler des hypothèses.",
+    "Une hypothèse doit s'appuyer sur des indices du texte.",
+    "Une bonne réponse explique le lien entre un mot repéré et l'idée proposée."
+  ],
+  "questions": [
+    {
+      "type": "carte",
+      "question": "Qu'est-ce qu'une lecture à dévoilement progressif ?",
+      "correction": "C'est une lecture où l'on découvre le texte par étapes, en formulant des hypothèses à partir des indices déjà lus."
+    },
+    {
+      "type": "carte",
+      "question": "À quoi servent les mots-clés dans une première phrase ?",
+      "correction": "Ils servent à repérer les informations importantes et à formuler des hypothèses sur la suite du texte."
+    },
+    {
+      "type": "libre",
+      "question": "À partir du titre L'homme qui plantait des arbres, quels mots semblent importants ?",
+      "correction": "Les mots importants sont homme, plantait et arbres. Ils annoncent un personnage, une action répétée et un lien avec la nature."
+    },
+    {
+      "type": "libre",
+      "question": "Formule une hypothèse possible à partir du titre L'homme qui plantait des arbres.",
+      "correction": "Exemple : le texte va peut-être raconter l'histoire d'un homme qui transforme un lieu en plantant beaucoup d'arbres."
+    },
+    {
+      "type": "qcm",
+      "question": "Une bonne hypothèse de lecture doit surtout...",
+      "choix": ["être inventée sans lien avec le texte", "s'appuyer sur des indices précis", "résumer toute l'histoire à l'avance"],
+      "bonne_reponse": 1,
+      "correction": "Une hypothèse doit s'appuyer sur des indices précis : mots du titre, mots-clés, champ lexical, première phrase ou paragraphe."
+    },
+    {
+      "type": "erreur",
+      "question": "Corrige l'erreur : Je pense que le texte parle d'un roi, sans indice particulier.",
+      "correction": "Il faut justifier l'hypothèse avec un indice. Par exemple : Je pense que le texte parle d'un homme proche de la nature car le titre insiste sur planter et arbres."
+    },
+    {
+      "type": "reponse_longue",
+      "question": "Explique comment formuler une hypothèse de lecture à partir d'une première phrase.",
+      "correction_minimale": "On regarde les mots importants.",
+      "correction_correcte": "On repère les mots importants de la première phrase et on les met en relation avec le titre pour imaginer la suite.",
+      "correction_complete": "Pour formuler une hypothèse de lecture, on repère d'abord les mots importants de la première phrase. On les met ensuite en relation avec les mots du titre et avec l'atmosphère créée par le texte. L'hypothèse doit rester prudente et justifiée par un indice précis."
+    }
+  ]
+}
