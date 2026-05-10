@@ -1,0 +1,9 @@
+{
+  "lessons": [
+    "data/lessons/maths_fractions.json",
+    "data/lessons/physique_tension_intensite.json",
+    "data/lessons/histoire_reponse_longue.json",
+    "data/lessons/italien_sentiments_stare_andare.json",
+    "data/lessons/anglais_personnage_celebre.json"
+  ]
+}
