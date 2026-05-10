@@ -1,1 +1,33 @@
-
+{
+  "id": "anglais_personnage_celebre",
+  "matiere": "anglais",
+  "niveau": "5e",
+  "titre": "Présenter un personnage célèbre",
+  "statut": "active",
+  "mots_cles": [
+    "identity",
+    "job",
+    "famous",
+    "because"
+  ],
+  "points_importants": [
+    "Présenter un personnage célèbre suppose de donner son identité, son métier, ce qu’il ou elle a fait, et pourquoi il ou elle est connu.",
+    "Une phrase complète vaut mieux qu’une réponse par mots isolés."
+  ],
+  "questions": [
+    {
+      "type": "texte",
+      "question": "Phrase modèle : He is famous because... Complète avec 'he invented something important'.",
+      "reponse": "He is famous because he invented something important",
+      "correction": "La phrase donne une justification avec because.",
+      "point_a_retenir": "Utiliser because pour expliquer."
+    },
+    {
+      "type": "texte",
+      "question": "Comment demander : quel est son métier ?",
+      "reponse": "What is his job?",
+      "correction": "What is his job?",
+      "point_a_retenir": "His pour un homme, her pour une femme."
+    }
+  ]
+}

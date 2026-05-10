@@ -1,0 +1,47 @@
+{
+  "id": "physique_tension_intensite",
+  "matiere": "physique-chimie",
+  "niveau": "5e",
+  "titre": "Tension et intensité",
+  "statut": "active",
+  "mots_cles": [
+    "tension",
+    "intensité",
+    "volt",
+    "ampère",
+    "circuit"
+  ],
+  "points_importants": [
+    "La tension se mesure en volts avec un voltmètre branché en dérivation.",
+    "L’intensité se mesure en ampères avec un ampèremètre branché en série.",
+    "Dans un circuit ouvert, le courant ne circule pas."
+  ],
+  "questions": [
+    {
+      "type": "qcm",
+      "question": "Quelle grandeur se mesure en volts ?",
+      "choix": [
+        "La tension",
+        "L’intensité",
+        "La résistance"
+      ],
+      "reponse": "La tension",
+      "correction": "La tension, notée U, se mesure en volts.",
+      "point_a_retenir": "Tension = volts = voltmètre."
+    },
+    {
+      "type": "texte",
+      "question": "Comment branche-t-on un ampèremètre ?",
+      "reponse": "en série",
+      "correction": "L’ampèremètre se branche en série dans la boucle du circuit.",
+      "point_a_retenir": "Ampèremètre en série."
+    },
+    {
+      "type": "texte",
+      "question": "Pourquoi une lampe ne brille-t-elle pas si l’interrupteur est ouvert ?",
+      "reponse": "le courant ne circule pas",
+      "correction": "Le circuit est ouvert : le courant ne circule pas, donc la lampe ne brille pas.",
+      "point_a_retenir": "Circuit ouvert = pas de courant."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "italien_sentiments_stare_andare",
+  "matiere": "italien",
+  "niveau": "5e",
+  "titre": "Émotions, sentiments, stare et andare",
+  "statut": "active",
+  "mots_cles": [
+    "sentiments",
+    "stare",
+    "andare",
+    "essere",
+    "avere"
+  ],
+  "points_importants": [
+    "Les adjectifs d’émotion s’accordent au masculin et au féminin.",
+    "Stare sert notamment à dire comment on va.",
+    "Andare signifie aller.",
+    "Essere et avere doivent être connus par cœur."
+  ],
+  "questions": [
+    {
+      "type": "texte",
+      "question": "Comment dit-on : je suis contente ?",
+      "reponse": "sono contenta",
+      "correction": "Candice est une fille : contenta au féminin.",
+      "point_a_retenir": "Les adjectifs s’accordent : contento/contenta."
+    },
+    {
+      "type": "texte",
+      "question": "Conjugue stare avec io.",
+      "reponse": "sto",
+      "correction": "Io sto.",
+      "point_a_retenir": "Stare : io sto."
+    },
+    {
+      "type": "texte",
+      "question": "Conjugue andare avec io.",
+      "reponse": "vado",
+      "correction": "Io vado.",
+      "point_a_retenir": "Andare : io vado."
+    }
+  ]
+}

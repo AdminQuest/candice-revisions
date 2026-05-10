@@ -1,0 +1,32 @@
+{
+  "id": "histoire_reponse_longue",
+  "matiere": "histoire-géographie",
+  "niveau": "5e",
+  "titre": "Répondre à une question longue",
+  "statut": "active",
+  "mots_cles": [
+    "affirmer",
+    "justifier",
+    "exemple"
+  ],
+  "points_importants": [
+    "Une réponse complète contient une affirmation, une justification et un exemple.",
+    "La formule utile est : on peut dire que..., car..., par exemple..."
+  ],
+  "questions": [
+    {
+      "type": "texte",
+      "question": "Quels sont les trois éléments d’une réponse complète ?",
+      "reponse": "affirmation justification exemple",
+      "correction": "Il faut répondre, justifier, puis donner un exemple précis.",
+      "point_a_retenir": "Affirmation + justification + exemple."
+    },
+    {
+      "type": "texte",
+      "question": "Complète la formule : On peut dire que..., car..., par exemple...",
+      "reponse": "ce qui montre que",
+      "correction": "On peut finir par une conséquence ou une conclusion : ce qui montre que...",
+      "point_a_retenir": "La réponse doit expliquer, pas seulement nommer."
+    }
+  ]
+}

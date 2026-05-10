@@ -1,0 +1,45 @@
+{
+  "id": "maths_fractions",
+  "matiere": "mathématiques",
+  "niveau": "5e",
+  "titre": "Fractions : simplifier, additionner, comparer",
+  "statut": "active",
+  "mots_cles": [
+    "fraction",
+    "numérateur",
+    "dénominateur",
+    "simplifier"
+  ],
+  "points_importants": [
+    "Pour additionner deux fractions de même dénominateur, on additionne seulement les numérateurs.",
+    "Simplifier une fraction consiste à diviser le numérateur et le dénominateur par un même nombre non nul."
+  ],
+  "questions": [
+    {
+      "type": "texte",
+      "question": "Simplifie 6/8.",
+      "reponse": "3/4",
+      "correction": "6 et 8 sont divisibles par 2 : 6/8 = 3/4.",
+      "point_a_retenir": "On divise le numérateur et le dénominateur par le même nombre."
+    },
+    {
+      "type": "texte",
+      "question": "Calcule 3/7 + 2/7.",
+      "reponse": "5/7",
+      "correction": "On additionne les numérateurs et on garde le dénominateur 7.",
+      "point_a_retenir": "On ne change pas le dénominateur."
+    },
+    {
+      "type": "qcm",
+      "question": "Quelle fraction est la plus grande ?",
+      "choix": [
+        "3/8",
+        "5/8",
+        "2/8"
+      ],
+      "reponse": "5/8",
+      "correction": "À dénominateur égal, le plus grand numérateur donne la plus grande fraction.",
+      "point_a_retenir": "Comparer les numérateurs quand les dénominateurs sont égaux."
+    }
+  ]
+}
