@@ -1,98 +1,289 @@
-const DATA = window.REVISIONS || [];
-const KEY = 'candice-revisions-v1';
-let progress = JSON.parse(localStorage.getItem(KEY) || '{}');
-let current = null;
+import { loadState, saveState, mergeLessons, normalizeLesson, downloadText } from "./storage.js";
+import { buildSession, evaluateAnswer, createAttempt, updateErrorsFromAttempt } from "./quizEngine.js";
+import { buildMarkdownReport } from "./reviewEngine.js";
+
+let state = loadState();
 let session = [];
-let idx = 0;
-let revealed = false;
-let selected = null;
+let currentIndex = 0;
 
-const $ = (s) => document.querySelector(s);
-const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const save = () => localStorage.setItem(KEY, JSON.stringify(progress));
-const shuffle = (a) => [...a].sort(() => Math.random() - 0.5);
-const qkey = (lesson, q) => `${lesson.id}::${lesson.questions.indexOf(q)}`;
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-function start(id, mode) {
-  current = DATA.find(x => x.id === id);
-  if (!current) return;
-  session = [...current.questions];
-  if (mode === 'quick') session = shuffle(session).slice(0, 5);
-  if (mode === 'errors') {
-    session = session.filter(q => (progress[qkey(current, q)]?.revoir || 0) > 0);
-    if (!session.length) session = [...current.questions];
+init();
+
+async function init() {
+  await loadBundledLessons();
+  bindTabs();
+  bindActions();
+  renderAll();
+}
+
+async function loadBundledLessons() {
+  try {
+    const manifest = await fetch("data/manifest.json").then(r => r.json());
+    const lessons = [];
+    for (const path of manifest.lessons) {
+      lessons.push(await fetch(path).then(r => r.json()));
+    }
+    const known = new Set(state.lessons.map(l => l.id));
+    const missing = lessons.map(normalizeLesson).filter(l => !known.has(l.id));
+    if (missing.length) mergeLessons(state, missing);
+  } catch (e) {
+    console.warn("Leçons embarquées non chargées", e);
   }
-  idx = 0; revealed = false; selected = null;
-  renderLesson();
 }
 
-function mark(status) {
-  const q = session[idx];
-  const k = qkey(current, q);
-  const p = progress[k] || { attempts: 0, ok: 0, almost: 0, revoir: 0 };
-  p.attempts += 1; p[status] += 1;
-  p.matiere = current.matiere; p.titre = current.titre; p.question = q.question; p.last = new Date().toISOString();
-  progress[k] = p; save();
-  if (idx < session.length - 1) { idx++; revealed = false; selected = null; renderLesson(); }
-  else renderEnd();
+function bindTabs() {
+  $$(".tab").forEach(btn => btn.addEventListener("click", () => {
+    $$(".tab").forEach(b => b.classList.remove("active"));
+    $$(".view").forEach(v => v.classList.remove("active"));
+    btn.classList.add("active");
+    $(`#view-${btn.dataset.view}`).classList.add("active");
+    renderAll();
+  }));
 }
 
-function renderHome() {
-  const app = $('#app');
-  const matieres = ['Toutes', ...new Set(DATA.map(x => x.matiere))];
-  const attempts = Object.values(progress).reduce((s, p) => s + (p.attempts || 0), 0);
-  const revoir = Object.values(progress).filter(p => (p.revoir || 0) > 0).length;
-  app.className = 'app-shell';
-  app.innerHTML = `<section class="hero"><div><h1>Candice Révisions</h1><p class="small">Révisions courtes, corrections immédiates, erreurs à refaire.</p></div><button class="btn ghost" id="reset">Effacer les progrès</button></section><section class="stats"><div class="card stat"><strong>${DATA.length}</strong><span class="small">leçons</span></div><div class="card stat"><strong>${DATA.reduce((s,x)=>s+x.questions.length,0)}</strong><span class="small">questions</span></div><div class="card stat"><strong>${attempts}</strong><span class="small">réponses</span></div><div class="card stat"><strong>${revoir}</strong><span class="small">à revoir</span></div></section><section class="card" style="margin-top:14px"><h2>Choisir une leçon</h2><div class="filters"><select id="mat">${matieres.map(m=>`<option>${esc(m)}</option>`).join('')}</select><input id="search" type="search" placeholder="Rechercher"></div><div class="grid" id="grid"></div></section>`;
-  $('#reset').onclick = () => { if (confirm('Effacer les progrès sur cet appareil ?')) { progress = {}; save(); renderHome(); } };
-  $('#mat').onchange = paintGrid;
-  $('#search').oninput = paintGrid;
-  paintGrid();
+function bindActions() {
+  $("#startSession").onclick = () => startSession(false);
+  $("#reviewErrors").onclick = () => { showView("today"); startSession(true); };
+  $("#checkAnswer").onclick = checkCurrent;
+  $("#nextQuestion").onclick = nextQuestion;
+  $("#stopSession").onclick = stopSession;
+  $("#lessonSearch").oninput = renderLessons;
+  $("#subjectFilter").onchange = renderLessons;
+  $("#validateImport").onclick = validateImport;
+  $("#applyImport").onclick = applyImport;
+  $("#exportMarkdown").onclick = () => downloadText(`bilan-candice-${today()}.md`, buildMarkdownReport(state), "text/markdown");
+  $("#exportJson").onclick = () => downloadText(`sauvegarde-candice-${today()}.json`, JSON.stringify(state,null,2), "application/json");
+  $("#backupFile").onchange = importBackup;
+  $("#resetData").onclick = resetData;
+  $("#clearStableErrors").onclick = () => {
+    state.errors = state.errors.filter(e => e.etat !== "stabilisee");
+    saveState(state); renderAll();
+  };
 }
 
-function paintGrid() {
-  const mat = $('#mat').value;
-  const term = $('#search').value.toLowerCase();
-  const lessons = DATA.filter(x => (mat === 'Toutes' || x.matiere === mat) && `${x.titre} ${x.matiere} ${(x.mots_cles||[]).join(' ')}`.toLowerCase().includes(term));
-  $('#grid').innerHTML = lessons.map(x => `<article class="card lesson-card"><div><span class="badge">${esc(x.niveau)}</span> <span class="badge">${esc(x.matiere)}</span></div><h3>${esc(x.titre)}</h3><p class="small">${x.questions.length} questions · ${x.duree_minutes || 10} min</p><div>${(x.mots_cles||[]).slice(0,4).map(w=>`<span class="badge">${esc(w)}</span>`).join(' ')}</div><div class="actions"><button class="btn" data-id="${esc(x.id)}" data-mode="quick">5 questions</button><button class="btn secondary" data-id="${esc(x.id)}" data-mode="all">Tout faire</button><button class="btn ghost" data-id="${esc(x.id)}" data-mode="errors">Erreurs</button></div></article>`).join('');
-  document.querySelectorAll('[data-id]').forEach(b => b.onclick = () => start(b.dataset.id, b.dataset.mode));
+function showView(name) {
+  document.querySelector(`.tab[data-view="${name}"]`).click();
 }
 
-function renderLesson() {
-  const q = session[idx];
-  const pct = Math.round(((idx + 1) / session.length) * 100);
-  $('#app').innerHTML = `<section class="card"><div class="toolbar"><button class="btn ghost" id="home">Accueil</button><span class="badge">${esc(current.matiere)}</span></div><h1>${esc(current.titre)}</h1>${course()}<div class="progress"><span style="width:${pct}%"></span></div><p class="small">Question ${idx + 1} / ${session.length}</p><div class="question-box">${question(q)}</div></section>`;
-  $('#home').onclick = renderHome;
-  const reveal = $('#reveal'); if (reveal) reveal.onclick = () => { revealed = true; renderLesson(); };
-  document.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { selected = Number(b.dataset.choice); revealed = true; renderLesson(); });
-  document.querySelectorAll('[data-mark]').forEach(b => b.onclick = () => mark(b.dataset.mark));
+function startSession(onlyErrors=false) {
+  const size = Number($("#sessionSize").value || 8);
+  session = buildSession(state, size, onlyErrors);
+  currentIndex = 0;
+  if (!session.length) {
+    $("#todaySummary").innerHTML = `<div class="card"><h3>Aucune question disponible</h3><p class="muted">Ajoute une leçon ou importe des exercices.</p></div>`;
+    return;
+  }
+  $("#sessionBox").classList.remove("hidden");
+  renderQuestion();
 }
 
-function course() {
-  if (!current.cours_court?.length) return '';
-  return `<div class="course-box"><strong>À retenir</strong><ul>${current.cours_court.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+function renderQuestion() {
+  const item = session[currentIndex];
+  const q = item.question, lesson = item.lesson;
+  $("#sessionTitle").textContent = lesson.titre;
+  $("#sessionMeta").textContent = `${lesson.matiere} · priorité ${item.score}`;
+  $("#sessionCount").textContent = `${currentIndex+1}/${session.length}`;
+  $("#feedback").className = "feedback hidden";
+  let html = `<div class="question">${escapeHtml(q.question)}</div>`;
+  if (q.type === "qcm" && q.choix?.length) {
+    html += q.choix.map(c => `<label class="choice"><input type="radio" name="answer" value="${escapeAttr(c)}"> ${escapeHtml(c)}</label>`).join("");
+  } else {
+    html += `<input id="textAnswer" type="text" autocomplete="off" placeholder="Réponse de Candice" style="width:100%">`;
+  }
+  $("#questionBox").innerHTML = html;
 }
 
-function question(q) {
-  let body = '';
-  if (q.type === 'qcm') body = (q.choix||[]).map((c,i)=>`<button class="choice ${selected===i?'selected':''}" data-choice="${i}">${esc(c)}</button>`).join('');
-  else body = `<textarea placeholder="Écris ta réponse ici."></textarea><button class="btn" id="reveal">Voir la correction</button>`;
-  return `<h2>${esc(q.question)}</h2><p class="small">${esc(q.type)}</p>${body}${revealed ? correction(q) : ''}`;
+function getAnswer() {
+  const checked = document.querySelector("input[name='answer']:checked");
+  if (checked) return checked.value;
+  return $("#textAnswer")?.value || "";
 }
 
-function correction(q) {
-  let c = '';
-  if (q.type === 'qcm') c = `<p><strong>${selected === q.bonne_reponse ? 'Bonne réponse.' : 'À corriger.'}</strong></p><p>${esc(q.correction || q.choix?.[q.bonne_reponse])}</p>`;
-  else if (q.type === 'reponse_longue') c = `<div class="levels"><div><strong>Minimale</strong><br>${esc(q.correction_minimale)}</div><div><strong>Correcte</strong><br>${esc(q.correction_correcte)}</div><div><strong>Complète</strong><br>${esc(q.correction_complete)}</div></div>`;
-  else c = `<p>${esc(q.correction)}</p>`;
-  return `<div class="correction"><h3>Correction</h3>${c}<div class="question-actions"><button class="btn" data-mark="ok">Juste</button><button class="btn secondary" data-mark="almost">Presque</button><button class="btn ghost" data-mark="revoir">À revoir</button></div></div>`;
+function checkCurrent() {
+  const item = session[currentIndex];
+  const given = getAnswer();
+  const correct = evaluateAnswer(item.question, given);
+  const attempt = createAttempt(item.lesson, item.question, given, correct);
+  state.attempts.push(attempt);
+  updateErrorsFromAttempt(state, attempt);
+  saveState(state);
+  const fb = $("#feedback");
+  fb.className = `feedback ${correct ? "ok" : "bad"}`;
+  fb.innerHTML = correct
+    ? `<strong>Correct.</strong><br>${escapeHtml(item.question.correction || item.question.reponse || "")}`
+    : `<strong>À corriger.</strong><br>Réponse attendue : <strong>${escapeHtml(item.question.reponse || "")}</strong><br>${escapeHtml(item.question.correction || "")}<br><em>${escapeHtml(item.question.point_a_retenir || "")}</em>`;
+  renderAll(false);
 }
 
-function renderEnd() {
-  $('#app').innerHTML = `<section class="card"><h1>Séance terminée</h1><p>Les progrès sont enregistrés sur cet appareil.</p><div class="actions"><button class="btn" id="again">Refaire</button><button class="btn secondary" id="errors">Refaire les erreurs</button><button class="btn ghost" id="home">Accueil</button></div></section>`;
-  $('#again').onclick = () => start(current.id, 'all');
-  $('#errors').onclick = () => start(current.id, 'errors');
-  $('#home').onclick = renderHome;
+function nextQuestion() {
+  if (currentIndex < session.length - 1) { currentIndex++; renderQuestion(); }
+  else stopSession();
 }
 
-renderHome();
+function stopSession() {
+  $("#sessionBox").classList.add("hidden");
+  session = [];
+  renderAll();
+}
+
+function renderAll() {
+  renderToday();
+  renderLessons();
+  renderErrors();
+  renderProgress();
+  renderPrompt();
+}
+
+function renderToday() {
+  const attempts = state.attempts || [];
+  const todayAttempts = attempts.filter(a => a.date?.slice(0,10) === today());
+  const ok = todayAttempts.filter(a => a.correct).length;
+  const activeErrors = (state.errors || []).filter(e => e.etat !== "stabilisee").length;
+  $("#todaySummary").innerHTML = `
+    <div class="card"><h3>Aujourd’hui</h3><p>${ok}/${todayAttempts.length} réponses justes</p></div>
+    <div class="card"><h3>Erreurs actives</h3><p>${activeErrors}</p></div>
+    <div class="card"><h3>Leçons actives</h3><p>${state.lessons.filter(l=>l.statut!=="archivee").length}</p></div>`;
+}
+
+function renderLessons() {
+  const subjects = [...new Set(state.lessons.map(l => l.matiere).filter(Boolean))].sort();
+  const sel = $("#subjectFilter");
+  const current = sel.value;
+  sel.innerHTML = `<option value="">Toutes les matières</option>` + subjects.map(s=>`<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join("");
+  sel.value = current;
+  const q = ($("#lessonSearch").value || "").toLowerCase();
+  const subj = sel.value;
+  const lessons = state.lessons.filter(l => (!subj || l.matiere === subj) && (`${l.matiere} ${l.titre} ${(l.mots_cles||[]).join(" ")}`.toLowerCase().includes(q)));
+  $("#lessonsList").innerHTML = lessons.map(l => `
+    <article class="lesson-card">
+      <h3>${escapeHtml(l.titre)}</h3>
+      <p class="muted">${escapeHtml(l.matiere)} · ${escapeHtml(l.statut || "active")} · ${l.questions?.length || 0} questions</p>
+      <div class="tags">${(l.mots_cles||[]).slice(0,6).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
+      <ul>${(l.points_importants||[]).slice(0,4).map(p=>`<li>${escapeHtml(p)}</li>`).join("")}</ul>
+      <button data-start-lesson="${escapeAttr(l.id)}">Réviser cette leçon</button>
+    </article>`).join("") || `<p class="muted">Aucune leçon.</p>`;
+  $$("[data-start-lesson]").forEach(btn => btn.onclick = () => {
+    const lesson = state.lessons.find(l => l.id === btn.dataset.startLesson);
+    session = (lesson.questions || []).map(q => ({lesson, question:q, score:10}));
+    currentIndex = 0; showView("today"); $("#sessionBox").classList.remove("hidden"); renderQuestion();
+  });
+}
+
+function renderErrors() {
+  const errors = state.errors || [];
+  $("#errorsList").innerHTML = errors.length ? errors.map(e => `
+    <article class="error-card">
+      <h3>${escapeHtml(e.matiere)} – ${escapeHtml(e.lecon)}</h3>
+      <p><strong>Erreur.</strong> ${escapeHtml(e.erreur)}</p>
+      <p><strong>Cause.</strong> ${escapeHtml(e.cause)}</p>
+      <p><strong>Règle.</strong> ${escapeHtml(e.regle)}</p>
+      <p><strong>Mini-exercice.</strong> ${escapeHtml(e.mini_exercice)}</p>
+      <span class="badge">${escapeHtml(e.etat)} · réussites ${e.reussites || 0}/2</span>
+    </article>`).join("") : `<p class="muted">Aucune erreur enregistrée.</p>`;
+}
+
+function renderProgress() {
+  const attempts = state.attempts || [];
+  const ok = attempts.filter(a => a.correct).length;
+  $("#progressCards").innerHTML = `
+    <div class="card"><h3>Taux de réussite</h3><p>${attempts.length ? Math.round(ok/attempts.length*100) : 0}%</p></div>
+    <div class="card"><h3>Réponses</h3><p>${attempts.length}</p></div>
+    <div class="card"><h3>Leçons</h3><p>${state.lessons.length}</p></div>`;
+  $("#attemptsTable").innerHTML = attempts.length ? `
+    <table><thead><tr><th>Date</th><th>Matière</th><th>Question</th><th>Réponse</th><th>Résultat</th></tr></thead>
+    <tbody>${attempts.slice(-30).reverse().map(a=>`<tr><td>${new Date(a.date).toLocaleDateString("fr-FR")}</td><td>${escapeHtml(a.matiere)}</td><td>${escapeHtml(a.question)}</td><td>${escapeHtml(a.reponse_donnee)}</td><td>${a.correct ? "✓" : "✗"}</td></tr>`).join("")}</tbody></table>` : `<p class="muted">Pas encore de réponse enregistrée.</p>`;
+}
+
+function validateImport() {
+  try {
+    const lessons = parseImport();
+    $("#importFeedback").className = "feedback ok";
+    $("#importFeedback").textContent = `${lessons.length} leçon(s) valide(s).`;
+  } catch (e) {
+    $("#importFeedback").className = "feedback bad";
+    $("#importFeedback").textContent = e.message;
+  }
+}
+
+function applyImport() {
+  try {
+    const lessons = parseImport();
+    mergeLessons(state, lessons);
+    $("#importFeedback").className = "feedback ok";
+    $("#importFeedback").textContent = `${lessons.length} leçon(s) importée(s).`;
+    $("#importArea").value = "";
+    renderAll();
+  } catch (e) {
+    $("#importFeedback").className = "feedback bad";
+    $("#importFeedback").textContent = e.message;
+  }
+}
+
+function parseImport() {
+  const raw = $("#importArea").value.trim();
+  if (!raw) throw new Error("Aucun JSON à importer.");
+  const data = JSON.parse(raw);
+  const lessons = Array.isArray(data) ? data : (data.lessons ? data.lessons : [data]);
+  if (!lessons.length) throw new Error("Aucune leçon trouvée.");
+  for (const l of lessons) {
+    if (!l.titre || !l.matiere || !Array.isArray(l.questions)) throw new Error("Chaque leçon doit contenir matiere, titre et questions.");
+  }
+  return lessons.map(normalizeLesson);
+}
+
+function importBackup(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      state = {...state, ...data, version:2};
+      saveState(state); renderAll();
+      alert("Sauvegarde importée.");
+    } catch { alert("Fichier de sauvegarde invalide."); }
+  };
+  reader.readAsText(file);
+}
+
+function resetData() {
+  if (!confirm("Réinitialiser les réponses et erreurs enregistrées sur ce navigateur ?")) return;
+  state.attempts = [];
+  state.errors = [];
+  saveState(state);
+  renderAll();
+}
+
+function renderPrompt() {
+  $("#promptBox").textContent = `Transforme ce cours ou ce contrôle en JSON compatible avec l'application Candice Révisions v2.
+
+Format attendu :
+{
+  "lessons": [
+    {
+      "id": "matiere_theme_court",
+      "matiere": "histoire-géographie",
+      "niveau": "5e",
+      "titre": "Titre de la leçon",
+      "statut": "active",
+      "mots_cles": ["mot1", "mot2", "mot3"],
+      "points_importants": ["point essentiel 1", "point essentiel 2"],
+      "questions": [
+        {
+          "type": "texte",
+          "question": "Question courte",
+          "reponse": "Réponse attendue",
+          "correction": "Correction simple",
+          "point_a_retenir": "Règle ou connaissance à retenir"
+        }
+      ]
+    }
+  ]
+}`;
+}
+
+function today(){return new Date().toISOString().slice(0,10);}
+function escapeHtml(s){return String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function escapeAttr(s){return escapeHtml(s).replace(/"/g,"&quot;");}
