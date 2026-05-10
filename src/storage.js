@@ -4,6 +4,7 @@ export function defaultState() {
   return {
     version: 2,
     lessons: [],
+    planning: [],
     attempts: [],
     errors: [],
     settings: { priorities: { "histoire-géographie": 3, "physique-chimie": 3, "svt": 2, "italien": 2 } }
@@ -33,6 +34,36 @@ export function mergeLessons(state, incomingLessons) {
   }
   state.lessons = Array.from(byId.values()).sort((a,b)=>(a.matiere||"").localeCompare(b.matiere||"") || (a.titre||"").localeCompare(b.titre||""));
   saveState(state);
+}
+
+export function mergePlanning(state, incomingPlanning) {
+  if (!Array.isArray(state.planning)) state.planning = [];
+  const byKey = new Map(state.planning.map(p => [planningKey(p), p]));
+  for (const item of incomingPlanning || []) {
+    const normalized = normalizePlanningItem(item);
+    if (!normalized) continue;
+    byKey.set(planningKey(normalized), { ...(byKey.get(planningKey(normalized)) || {}), ...normalized });
+  }
+  state.planning = Array.from(byKey.values()).sort((a,b)=>(a.date||"").localeCompare(b.date||"") || (a.matiere||"").localeCompare(b.matiere||""));
+  saveState(state);
+}
+
+function planningKey(item) {
+  return `${item.date || ""}__${item.matiere || ""}__${(item.titres || []).join("|")}`;
+}
+
+export function normalizePlanningItem(item) {
+  if (!item || typeof item !== "object") return null;
+  const titres = Array.isArray(item.titres)
+    ? item.titres.filter(Boolean)
+    : [item.titre].filter(Boolean);
+  if (!item.date || !item.matiere || !titres.length) return null;
+  return {
+    date: String(item.date).slice(0,10),
+    matiere: item.matiere,
+    titres,
+    statut: item.statut || "a_faire"
+  };
 }
 
 export function normalizeLesson(lesson) {
