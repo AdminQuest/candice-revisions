@@ -1,52 +1,62 @@
-# Candice Révisions
+# Candice Révisions – v2
 
-Application statique pour créer et utiliser un fichier HTML autonome de révision niveau 5e.
+Application Web statique compatible GitHub Pages.
 
-Le dépôt sert à produire des entraînements courts, utilisables sur PC ou téléphone, sans serveur et sans compte. L'IA intervient en amont pour transformer les cours, photos, devoirs ou contrôles corrigés en fichiers JSON. L'application HTML sert ensuite à s'entraîner : répondre, afficher la correction, marquer les erreurs et refaire les questions ratées.
+## Nouveautés v2
 
-## Utilisation immédiate
+- Import de nouvelles leçons au format JSON.
+- Sauvegarde locale des réponses dans le navigateur.
+- Cahier d’erreurs automatique.
+- Révision adaptative : erreurs récentes, leçons actives, matières prioritaires.
+- Export Markdown du bilan.
+- Export/import JSON de sauvegarde.
+- Structure compatible GitHub Pages : `index.html` à la racine.
 
-Le fichier `index.html` à la racine peut être ouvert directement dans un navigateur ou publié avec GitHub Pages.
+## Publication GitHub Pages
 
-## Génération locale
+Déposer directement ces fichiers à la racine du repo :
 
-```bash
-npm install
-npm run build
-```
-
-Le script produit :
-
-```text
-dist/candice-revisions.html
+```txt
 index.html
+src/
+data/
+archives/
+README.md
 ```
 
-## Ajouter une leçon
+Puis vérifier :
 
-Créer un fichier JSON dans `content/5e/<matiere>/`, puis relancer :
-
-```bash
-npm run build
+```txt
+Settings > Pages > Branch > main / root
 ```
 
-## Types de questions disponibles
+## Format d’import d’une leçon
 
-- `carte` : question courte, correction à révéler.
-- `libre` : réponse écrite libre, correction à comparer.
-- `qcm` : choix unique.
-- `erreur` : correction d'une erreur volontaire.
-- `reponse_longue` : réponse rédigée avec niveaux minimale / correcte / complète.
-- `oral` : entraînement oral avec phrase modèle.
+```json
+{
+  "lessons": [
+    {
+      "id": "italien_sentiments",
+      "matiere": "italien",
+      "niveau": "5e",
+      "titre": "Émotions et sentiments",
+      "statut": "active",
+      "mots_cles": ["sentiments", "accord"],
+      "points_importants": ["Les adjectifs s’accordent au masculin et au féminin."],
+      "questions": [
+        {
+          "type": "texte",
+          "question": "Comment dit-on : je suis contente ?",
+          "reponse": "sono contenta",
+          "correction": "Contenta est au féminin.",
+          "point_a_retenir": "Les adjectifs s’accordent."
+        }
+      ]
+    }
+  ]
+}
+```
 
-## Principe pédagogique
+## Limite volontaire
 
-L'application privilégie les formats courts : rappel actif, corrections immédiates, erreurs à refaire, réponses justifiées. Elle ne cherche pas à remplacer le cours ni à faire le travail à la place de l'élève. Elle sert à automatiser les révisions répétitives.
-
-## Flux conseillé
-
-1. Photographier le cours, la consigne ou le contrôle corrigé.
-2. Demander à ChatGPT de produire un questionnaire JSON.
-3. Placer le fichier JSON dans `content/5e/<matiere>/`.
-4. Relancer `npm run build`.
-5. Donner à Candice le fichier HTML généré.
+La sauvegarde est locale au navigateur utilisé. Pour changer d’appareil, utiliser l’export/import JSON.
