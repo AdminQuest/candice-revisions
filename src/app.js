@@ -1,4 +1,4 @@
-import { loadState, saveState, mergeLessons, normalizeLesson, downloadText } from "./storage.js";
+import { loadState, saveState, mergeLessons, mergePlanning, normalizeLesson, normalizePlanningItem, downloadText } from "./storage.js";
 import { buildSession, evaluateAnswer, createAttempt, updateErrorsFromAttempt } from "./quizEngine.js";
 import { buildMarkdownReport } from "./reviewEngine.js";
 
@@ -79,6 +79,16 @@ function startSession(onlyErrors=false) {
   renderQuestion();
 }
 
+function startPlannedLesson(lessonId) {
+  const lesson = state.lessons.find(l => l.id === lessonId);
+  if (!lesson) return;
+  session = (lesson.questions || []).map(q => ({lesson, question:q, score:10}));
+  currentIndex = 0;
+  showView("today");
+  $("#sessionBox").classList.remove("hidden");
+  renderQuestion();
+}
+
 function renderQuestion() {
   const item = session[currentIndex];
   const q = item.question, lesson = item.lesson;
@@ -141,10 +151,56 @@ function renderToday() {
   const todayAttempts = attempts.filter(a => a.date?.slice(0,10) === today());
   const ok = todayAttempts.filter(a => a.correct).length;
   const activeErrors = (state.errors || []).filter(e => e.etat !== "stabilisee").length;
+  const activeLessons = state.lessons.filter(l=>l.statut!=="archivee").length;
+  const planned = upcomingPlanning(7);
+
   $("#todaySummary").innerHTML = `
     <div class="card"><h3>Aujourd’hui</h3><p>${ok}/${todayAttempts.length} réponses justes</p></div>
+    <div class="card"><h3>À préparer</h3><p>${planned.length} échéance(s) dans les 7 jours</p></div>
     <div class="card"><h3>Erreurs actives</h3><p>${activeErrors}</p></div>
-    <div class="card"><h3>Leçons actives</h3><p>${state.lessons.filter(l=>l.statut!=="archivee").length}</p></div>`;
+    <div class="card"><h3>Leçons actives</h3><p>${activeLessons}</p></div>
+    ${renderPlanningCards(planned)}`;
+
+  $$("[data-start-planned]").forEach(btn => btn.onclick = () => startPlannedLesson(btn.dataset.startPlanned));
+}
+
+function upcomingPlanning(daysAhead = 7) {
+  const start = new Date(today() + "T00:00:00");
+  const end = new Date(start);
+  end.setDate(end.getDate() + daysAhead);
+  return (state.planning || [])
+    .map(normalizePlanningItem)
+    .filter(Boolean)
+    .filter(p => p.statut !== "terminee")
+    .filter(p => {
+      const d = new Date(p.date + "T00:00:00");
+      return d >= start && d <= end;
+    });
+}
+
+function renderPlanningCards(items) {
+  if (!items.length) return `<div class="card wide"><h3>Prochains jours</h3><p class="muted">Aucune leçon planifiée.</p></div>`;
+  return `<div class="card wide"><h3>Prochains jours</h3>${items.map(item => {
+    const lessons = findPlannedLessons(item);
+    const lessonButtons = lessons.length
+      ? lessons.map(l => `<button data-start-planned="${escapeAttr(l.id)}">Réviser : ${escapeHtml(l.titre)}</button>`).join(" ")
+      : `<span class="muted">Leçon non trouvée dans l’import.</span>`;
+    return `<div class="planned-item">
+      <p><strong>${formatDate(item.date)}</strong> · ${escapeHtml(item.matiere)}</p>
+      <p>${item.titres.map(escapeHtml).join(" ; ")}</p>
+      <div>${lessonButtons}</div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function findPlannedLessons(item) {
+  return state.lessons.filter(l =>
+    l.matiere === item.matiere && item.titres.some(t => sameTitle(l.titre, t))
+  );
+}
+
+function sameTitle(a, b) {
+  return String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
 }
 
 function renderLessons() {
@@ -164,11 +220,7 @@ function renderLessons() {
       <ul>${(l.points_importants||[]).slice(0,4).map(p=>`<li>${escapeHtml(p)}</li>`).join("")}</ul>
       <button data-start-lesson="${escapeAttr(l.id)}">Réviser cette leçon</button>
     </article>`).join("") || `<p class="muted">Aucune leçon.</p>`;
-  $$("[data-start-lesson]").forEach(btn => btn.onclick = () => {
-    const lesson = state.lessons.find(l => l.id === btn.dataset.startLesson);
-    session = (lesson.questions || []).map(q => ({lesson, question:q, score:10}));
-    currentIndex = 0; showView("today"); $("#sessionBox").classList.remove("hidden"); renderQuestion();
-  });
+  $$("[data-start-lesson]").forEach(btn => btn.onclick = () => startPlannedLesson(btn.dataset.startLesson));
 }
 
 function renderErrors() {
@@ -198,9 +250,10 @@ function renderProgress() {
 
 function validateImport() {
   try {
-    const lessons = parseImport();
+    const parsed = parseImport();
+    const message = `${parsed.lessons.length} leçon(s) valide(s), ${parsed.planning.length} échéance(s) planifiée(s).`;
     $("#importFeedback").className = "feedback ok";
-    $("#importFeedback").textContent = `${lessons.length} leçon(s) valide(s).`;
+    $("#importFeedback").textContent = message;
   } catch (e) {
     $("#importFeedback").className = "feedback bad";
     $("#importFeedback").textContent = e.message;
@@ -209,10 +262,11 @@ function validateImport() {
 
 function applyImport() {
   try {
-    const lessons = parseImport();
-    mergeLessons(state, lessons);
+    const parsed = parseImport();
+    mergeLessons(state, parsed.lessons);
+    mergePlanning(state, parsed.planning);
     $("#importFeedback").className = "feedback ok";
-    $("#importFeedback").textContent = `${lessons.length} leçon(s) importée(s).`;
+    $("#importFeedback").textContent = `${parsed.lessons.length} leçon(s) importée(s), ${parsed.planning.length} échéance(s) ajoutée(s).`;
     $("#importArea").value = "";
     renderAll();
   } catch (e) {
@@ -225,12 +279,35 @@ function parseImport() {
   const raw = $("#importArea").value.trim();
   if (!raw) throw new Error("Aucun JSON à importer.");
   const data = JSON.parse(raw);
-  const lessons = Array.isArray(data) ? data : (data.lessons ? data.lessons : [data]);
+
+  const lessons = Array.isArray(data)
+    ? data
+    : (Array.isArray(data.lessons) ? data.lessons : (Array.isArray(data.lecons) ? data.lecons : [data]));
+
   if (!lessons.length) throw new Error("Aucune leçon trouvée.");
   for (const l of lessons) {
     if (!l.titre || !l.matiere || !Array.isArray(l.questions)) throw new Error("Chaque leçon doit contenir matiere, titre et questions.");
   }
-  return lessons.map(normalizeLesson);
+
+  const planning = Array.isArray(data) ? buildPlanningFromLessonDates(lessons) : [
+    ...(Array.isArray(data.planning) ? data.planning : []),
+    ...buildPlanningFromLessonDates(lessons)
+  ];
+
+  return {
+    lessons: lessons.map(normalizeLesson),
+    planning: planning.map(normalizePlanningItem).filter(Boolean)
+  };
+}
+
+function buildPlanningFromLessonDates(lessons) {
+  return lessons
+    .filter(l => l.date || l.echeance || l.deadline || l.a_preparer_pour)
+    .map(l => ({
+      date: l.date || l.echeance || l.deadline || l.a_preparer_pour,
+      matiere: l.matiere,
+      titres: [l.titre]
+    }));
 }
 
 function importBackup(evt) {
@@ -249,9 +326,10 @@ function importBackup(evt) {
 }
 
 function resetData() {
-  if (!confirm("Réinitialiser les réponses et erreurs enregistrées sur ce navigateur ?")) return;
+  if (!confirm("Réinitialiser les réponses, erreurs et échéances enregistrées sur ce navigateur ?")) return;
   state.attempts = [];
   state.errors = [];
+  state.planning = [];
   saveState(state);
   renderAll();
 }
@@ -263,27 +341,29 @@ Format attendu :
 {
   "lessons": [
     {
-      "id": "matiere_theme_court",
-      "matiere": "histoire-géographie",
-      "niveau": "5e",
-      "titre": "Titre de la leçon",
-      "statut": "active",
-      "mots_cles": ["mot1", "mot2", "mot3"],
-      "points_importants": ["point essentiel 1", "point essentiel 2"],
+      "matiere": "italien",
+      "titre": "Se présenter et présenter quelqu'un",
       "questions": [
         {
-          "type": "texte",
           "question": "Question courte",
-          "reponse": "Réponse attendue",
-          "correction": "Correction simple",
-          "point_a_retenir": "Règle ou connaissance à retenir"
+          "reponse": "Réponse attendue"
         }
       ]
     }
+  ],
+  "planning": [
+    {
+      "date": "2026-05-12",
+      "matiere": "italien",
+      "titres": ["Se présenter et présenter quelqu'un"]
+    }
   ]
-}`;
+}
+
+Règle : chaque leçon doit contenir matiere, titre et questions. Le bloc planning sert à afficher les leçons dans l'onglet Aujourd'hui pour les prochains jours.`;
 }
 
 function today(){return new Date().toISOString().slice(0,10);}
+function formatDate(s){return new Date(`${s}T00:00:00`).toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });}
 function escapeHtml(s){return String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function escapeAttr(s){return escapeHtml(s).replace(/"/g,"&quot;");}
